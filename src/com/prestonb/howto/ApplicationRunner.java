@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Writer;
 
 @SuppressWarnings("unused")
 public class ApplicationRunner {
@@ -16,7 +17,8 @@ public class ApplicationRunner {
 //		writeToConsole();
 //		readFromConsole();
 //		resolvePathNames();
-		writeToFile();
+//		writeToFile();
+		readFromFile();
 	}
 	
 	private void writeToConsole() {
@@ -137,8 +139,8 @@ public class ApplicationRunner {
 		
 		// Step 4: *Define* the FileWriter and BufferedWriter OUTSIDE of the try/catch block
 		// This must be defined *outside* or it cannot be accessed (closed) in the finally block
-		FileWriter fileWriter = null;
-		BufferedWriter bufferedWriter = null;
+		Writer fileWriter = null;
+		Writer bufferedWriter = null;
 
 		try {
 			
@@ -181,6 +183,48 @@ public class ApplicationRunner {
 					fileWriter.close();
 			} catch (IOException ex) {
 				System.out.println("An error occurred closing the BufferedWriter");
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	private void readFromFile() {
+		// Step 1: Set the file path
+		String filePath = "input/input.txt";
+		
+		// Step 2: Define a BufferedReader and Reader *outside* of try/catch block
+		BufferedReader bufferedReader = null;
+		Reader fileReader = null;
+
+		try {
+
+			// Step 3: Create a FileReader from the 
+			fileReader = new FileReader(filePath);
+			
+			// Step 4: Create a BufferedReader from the FileReader
+			bufferedReader = new BufferedReader(fileReader);
+
+			// Step 5: Read the current line
+			String sCurrentLine = bufferedReader.readLine();
+
+			// Step 6: Continue reading the next line until the EOF (End of File)
+			while (sCurrentLine != null) {
+				System.out.println(sCurrentLine);
+				sCurrentLine = bufferedReader.readLine();
+			}
+
+		} catch (IOException e) {
+			System.out.println("Error reading from file.");
+			e.printStackTrace();
+		} finally {
+			try {
+				// Step 7: Close the BufferedReader and FileReader
+				if (bufferedReader != null)
+					bufferedReader.close();
+				if (fileReader != null)
+					fileReader.close();
+			} catch (IOException ex) {
+				System.out.println("Error closing BufferedReader or FileReader");
 				ex.printStackTrace();
 			}
 		}
