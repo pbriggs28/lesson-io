@@ -1,6 +1,8 @@
 package com.prestonb.howto;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -8,7 +10,8 @@ import java.io.Reader;
 public class ApplicationRunner {
 
 	public void run() {
-		readFromConsole();
+//		readFromConsole();
+		resolvePathNames();
 	}
 	
 	private void readFromConsole() {
@@ -71,5 +74,28 @@ public class ApplicationRunner {
 				}
 			}
 		}
+	}
+	
+	private void resolvePathNames() {
+		String noPrefixPath = 		"input/input.txt";
+		String dotSlashPrefixPath = "./input/input.txt";
+		String dotDotSlashPrefixPath = "../input/input.txt";
+		String slashPrefixPath = 	"/input/input.txt";
+
+		File noPrefixFile = new File(noPrefixPath);
+		File dotDotSlashPrefixFile = new File(dotDotSlashPrefixPath);
+		File dotSlashPrefixFile = new File(dotSlashPrefixPath);
+		File slashPrefixFile = new File(slashPrefixPath);
+
+		System.out.println(String.format("[%s]\t normalizes to [%s]", noPrefixFile.getAbsolutePath(), noPrefixFile.getAbsoluteFile().toPath().normalize()));
+		System.out.println(String.format("[%s]\t normalizes to [%s]", dotDotSlashPrefixFile.getAbsolutePath(), dotDotSlashPrefixFile.getAbsoluteFile().toPath().normalize()));
+		System.out.println(String.format("[%s]\t normalizes to [%s]", dotSlashPrefixFile.getAbsolutePath(), dotSlashPrefixFile.getAbsoluteFile().toPath().normalize()));
+		System.out.println(String.format("[%s]\t\t\t\t\t\t\t normalizes to [%s]", slashPrefixFile.getAbsolutePath(), slashPrefixFile.getAbsoluteFile().toPath().normalize()));
+		System.out.println();
+		System.out.println(String.format("[%s]\t resolves to [%s]", noPrefixFile.getPath(), noPrefixFile.getAbsoluteFile().toPath().normalize()));
+		System.out.println(String.format("[%s]\t resolves to [%s]", dotDotSlashPrefixFile.getPath(), dotDotSlashPrefixFile.getAbsoluteFile().toPath().normalize()));
+		System.out.println(String.format("[%s]\t resolves to [%s]", dotSlashPrefixFile.getPath(), dotSlashPrefixFile.getAbsoluteFile().toPath().normalize()));
+		System.out.println(String.format("[%s]\t resolves to [%s]", slashPrefixFile.getPath(), slashPrefixFile.getAbsoluteFile().toPath().normalize()));
+		
 	}
 }
