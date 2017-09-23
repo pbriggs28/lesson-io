@@ -13,8 +13,14 @@ import java.io.Writer;
 @SuppressWarnings("unused")
 public class ApplicationRunner {
 
+	public static void main(String[] args) {
+		ApplicationRunner app = new ApplicationRunner();
+		app.run();
+	}
+
 	public void run() {
 //		writeToConsole();
+//		readFromConsole();
 //		readFromConsole();
 //		resolvePathNames();
 //		writeToFile();
@@ -25,69 +31,43 @@ public class ApplicationRunner {
 		System.out.println("Hello world!");
 	}
 	
+	private void readFromConsoleSimple() {
+		try {
+			InputStreamReader consoleInput = new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader(consoleInput);
+			System.out.print("Type something: ");
+			String input = br.readLine();
+			System.out.println("You typed : " + input);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
+	
 	private void readFromConsole() {
 		boolean exit = false;
-		
-		// Step 1: Get the console as an "input stream"
-		Reader consoleInput = new InputStreamReader(System.in);
-		
-		// Step 2: *Define* the BufferedReader OUTSIDE of the try/catch block
-		// This must be defined outside or it cannot be accessed (closed) in the finally block
-		BufferedReader br = null;
-		
+		InputStreamReader consoleInput = new InputStreamReader(System.in);
 		try {
-
-			// Step 3: Create a BufferedReader from the InputStreamReader
-			// This allows reading full lines at a time
-			br = new BufferedReader(consoleInput);
-
+			BufferedReader br = new BufferedReader(consoleInput);
 			while (exit == false) {
-				
-				// Step 4: Print to the console to tell the user what to do
 				System.out.print("Enter 'exit' to quit application: ");
-
-				// Step 5: Tell the BufferedReader to tell the InputStreamReader to 
-				// wait for the user to enter the next line
-				
-				// BufferedReader -> InputStreamReader -> console -> [user types something]
-				//																|
-				//																|
-				//																|
-				// BufferedReader <- InputStreamReader <- console <-------------- 
-				
 				String input = br.readLine();
 
-				// Step 6: Check if the user typed "exit"
-				if (input == "exit") {
-//				if ("exit".equals(input)) {
+//				if (input == "exit") {
+				if (input.equals("exit")) {
 					exit = true;
 					System.out.println("Fine I'll just leave then..");
 				} else {
 					
-					// Step 7: Print what the user typed
 					System.out.println("You typed : " + input);
 					System.out.println("-----------\n");
 				}
 			}
-			
 		// If something unexpected happens an exception will be thrown and caught here
 		} catch (IOException e) {
 			System.out.println("An error occured!");
 			e.printStackTrace();
-		} finally {
-			
-			// Step 8: VERY IMPORTANT! Close the input stream. If not it will stay open forever.
-			// For a console InputStream this isn't a big deal but if reading from a file
-			// it could keep a lock on the file and no one could edit it
-			if (br != null) {
-				try {
-					System.out.println("Closing input stream");
-					br.close();
-				} catch (IOException e) {
-					System.out.println("An error occured!");
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 	
